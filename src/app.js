@@ -14,7 +14,7 @@ const partialsDir = path.join(templatesDir, '/partials')
 
 
 //Setup the application's directories
-express.static(staticDir);
+app.use(express.static(staticDir));
 app.set('view engine', 'hbs');
 app.set('views', viewsDir);
 hbs.registerPartials(partialsDir);
@@ -25,6 +25,11 @@ app.get('', (req, res) => {
         res.render('index', data)
     })
 })
+
+app.get('/credits', (req, res) => {
+    res.render('credits', {})
+})
+
 
 app.get('/data', (req, res) => {
     yad2Api().then((response) => {

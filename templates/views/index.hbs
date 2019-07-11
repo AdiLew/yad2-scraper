@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html dor="rtl">
+<html dir="rtl">
 
 <head>
     <title>Yad 2 Scraper</title>
-    <dir></dir>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://bootstrap.rtlcss.com/docs/4.2/dist/css/rtl/bootstrap.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+
 </head>
 
 <body>
-    <h1>Home</h1>
-    <div class="container">
+    {{>navbar}}
+    <div class="jumbotron">
+        <h1>דירותתת</h1>
+    </div>
+    <div class="container content-wrapper">
 
-        <div class="row">
+        <div class="row appartments">
             {{#each appartments}}
             {{>appartmentThumbnail}}
             {{/each}}

@@ -1,9 +1,22 @@
-<div class="card" style="width: 18rem; ">
-    <img src="{{img_url}}" class="card-img-top" alt="..." style="max-height: 12rem; object-fit: cover;">
-    <div class=" card-body">
+<div class="card appartment-thumb">
+    {{#if img_url}}
+    <img src="{{img_url}}" class="card-img-top appt-main-img">
+    {{else}}
+    <div class="missing-img card-img-top appt-main-img">
+        <span class="fa fa-question"></span>
+    </div>
+    {{/if}}
+    <div class="card-body">
         <h5 class="card-title">{{row_1}}</h5>
         <p class="card-text">עלה ב{{date_added}}</p>
         <p class="card-text">כניסה ב<strong>{{date_of_entry}}</strong></p>
-        <a href="https://www.yad2.co.il/s/c/{{id}}" target="_blank" class="btn btn-dark">Go somewhere</a>
+        <div class="row appt-thumbnail-footer">
+            <div class="feature-icons">
+                <span class="fa fa-paw {{#unless PetsInHouse_text}} icon-inactive{{/unless}}"></span>
+                <span class="fa fa-car {{#unless Parking_text}} icon-inactive{{/unless}}"></span>
+            </div>
+            <a href="https://www.yad2.co.il/s/c/{{id}}" target="_blank" class="btn btn-dark">למודעה</a>
+        </div>
+
     </div>
 </div>

@@ -1,4 +1,38 @@
-img{
+.appt-main-img{
     width: 18rem;
-    height: 15rem;
+    height: 12rem;
+    object-fit: cover;
+}
+.appt-main-img.missing-img{
+    background: grey;
+    display: flex;
+    font-size: 6rem;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.appartments{
+    justify-content: space-evenly;
+}
+.card.appartment-thumb{
+    margin-bottom: 3rem;
+}
+
+.appt-thumbnail-footer{
+    justify-content: space-between
+}
+
+.feature-icons {
+    display: flex;
+    font-size: 1.3em;
+}
+
+.feature-icons .fa {
+    padding: 3px;
+}
+
+
+.feature-icons .icon-inactive{
+    opacity: 0.1;
 }
