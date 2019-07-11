@@ -1,4 +1,5 @@
 const request = require('request');
+const _ = require('lodash')
 
 
 const requestOptions = {
@@ -23,13 +24,14 @@ const requestOptions = {
 const callApi = () => {
     return new Promise((resolve, reject) => {
         try {
-            request(requestOptions, (error, response, {body}) => {
+            request(requestOptions, (error, response, body) => {
                 if (error) {
                     reject(error)
                 }
                 else {
-                    const { total_items, feed_items } = body.feed
-                    resolve({ total_items, feed_items })
+                    const { total_items, feed_items } = _.get(body, 'feed')
+                    const appartments = feed_items.filter((i) => i.type === 'ad')
+                    resolve({ total_items, appartments })
                 }
             })
         }
