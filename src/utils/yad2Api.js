@@ -1,30 +1,52 @@
-const request = require('request');
-const _ = require('lodash')
-
+const querystring = require('querystring');
+const fetch = require('node-fetch');
+const _ = require('lodash');
+const moment = require('moment');
+const geolib = require('geolib');
 
 const requestOptions = {
-    url: 'https://www.yad2.co.il/api/feed/get',
     headers: {
+        //Chrome-like User agent compells Yad 2 return the response as a JSON for some reason.
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'
     },
-    qs: {
-        cat: 2,
-        subcat: 2,
-        city: 8600,
-        property: [1, 3],
-        rooms: "3--1",
-        price: "-1-6000",
-        parking: 1,
-        EnterDate: '1-10-2019'
-
-    },
-    json: true
+    method: 'GET'
 }
 
-const callApi = () => {
+
+const getApptsList = (filters) => {
+    let endpoint = 'https://www.yad2.co.il/api/feed/get'
+    const query = querystring.stringify(filters)
+    endpoint += _.isEmpty(filters) ? '' : `?${query}`
+
+    return fetch(endpoint, requestOptions)
+        .then(res => res.json())
+        .then(data => {
+            const { total_items, feed_items } = _.get(data, 'feed');
+            const appartments = feed_items
+                .filter((i) => i.type === 'ad')
+                .map((i) => cleanListItemObject(i))
+                .sort((a, b) => {
+                    return b.date_added.valueOf() - a.date_added.valueOf();
+                })
+
+            return { total_items, appartments };
+        })
+}
+
+const getApptDetails = (apptId) => {
+    const endpoint = `https://www.yad2.co.il/api/item/${apptId}`
+
+    return fetch(endpoint, requestOptions)
+        .then(res => res.json())
+        .then(json => json)
+}
+
+const callApi = (qs) => {
+    requestOptions.qs = qs;
+
     return new Promise((resolve, reject) => {
         try {
-            request(requestOptions, (error, response, body) => {
+            request('https://www.yad2.co.il/api/feed/get', requestOptions, (error, response, body) => {
                 if (error) {
                     reject(error)
                 }
@@ -42,4 +64,62 @@ const callApi = () => {
 }
 
 
-module.exports = callApi
+const cleanListItemObject = (i) => {
+    return {
+        //Basic info
+        square_meters: i.square_meters,
+        price: i.price,
+        Rooms_text: i.Rooms_text,
+        Floor_text: i.Floor_text,
+        TotalFloor_text: i.TotalFloor_text,
+        HomeTypeID_text: i.HomeTypeID_text,
+        yehidatdiur_text: i.yehidatdiur_text,
+        PaymentInYear_text: i.PaymentInYear_text,
+        date_of_entry: i.date_of_entry,
+        Immediate_text: i.Immediate_text,
+        AssetClassificationID_text: i.AssetClassificationID_text,
+        //location
+        coordinates: i.coordinates,
+        address_home_number: i.address_home_number,
+        street: i.street,
+        neighborhood: i.neighborhood,
+        city: i.city,
+        //features,
+        AirConditioner_text: i.AirConditioner_text,
+        mamad_text: i.mamad_text,
+        FairRent_text: i.FairRent_text,
+        Furniture_text: i.Furniture_text,
+        sunpatio_text: i.sunpatio_text,
+        Amudim_text: i.Amudim_text,
+        storeroom_text: i.storeroom_text,
+        Parking_text: i.Parking_text,
+        PetsInHouse_text: i.PetsInHouse_text,
+        Grating_text: i.Grating_text,
+        Elevator_text: i.Elevator_text,
+        patio_text: i.patio_text,
+        Meshupatz_text: i.Meshupatz_text,
+        Porch_text: i.Porch_text,
+        LongTerm_text: i.LongTerm_text,
+        address_more: i.address_more,
+        //images and videos,
+        img_url: i.img_url,
+        images: i.images,
+        images_count: i.images_count,
+        video_url: i.video_url,
+        mp4_video_url: i.mp4_video_url,
+        //ad details
+        id: i.id,
+        date_added: new moment(i.date_added, 'YYYY-MM-DD HH:mm:SS'),
+        customer_id: i.customer_id,
+        contact_name: i.contact_name,
+        merchant: i.merchant,
+        merchant_name: i.merchant_name,
+        added: 'Uploaded '+moment(i.date_added, 'YYYY-MM-DD HH:mm:SS').fromNow(),
+        kmFromOmris: Math.round(geolib.getDistance(i.coordinates, {latitude: 32.0874588, longitude: 34.8141411})/1000.0 , 1)
+    }
+}
+
+module.exports = {
+    getApptsList,
+    getApptDetails
+}

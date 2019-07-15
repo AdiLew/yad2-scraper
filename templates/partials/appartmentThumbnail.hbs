@@ -7,15 +7,19 @@
     </div>
     {{/if}}
     <div class="card-body">
-        <h5 class="card-title">{{row_1}}</h5>
-        <p class="card-text">עלה ב{{date_added}}</p>
+        <h5 class="card-title">{{street}} {{address_home_number}}</h5>
+        <p class="h6">{{neighborhood}}, {{city}}</p>
+        <p class="h6 appt-price">{{price}}</p>
+        {{!-- <p class="card-text">{{added}}</p> --}}
         <p class="card-text">כניסה ב<strong>{{date_of_entry}}</strong></p>
+        <p> <span class="fa fa-map-marker"></span> {{kmFromOmris}} ק"מ </p>
         <div class="row appt-thumbnail-footer">
             <div class="feature-icons">
                 <span class="fa fa-paw {{#unless PetsInHouse_text}} icon-inactive{{/unless}}"></span>
                 <span class="fa fa-car {{#unless Parking_text}} icon-inactive{{/unless}}"></span>
             </div>
-            <a href="https://www.yad2.co.il/s/c/{{id}}" target="_blank" class="btn btn-dark">למודעה</a>
+            <a href="/appt?apptId={{id}}" target="_blank" class="btn btn-dark">למודעה</a>
+            {{!-- <a href="https://www.yad2.co.il/s/c/{{id}}" target="_blank" class="btn btn-dark">למודעה</a> --}}
         </div>
 
     </div>

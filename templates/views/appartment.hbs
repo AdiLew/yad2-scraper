@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+    <title>Yad 2 Scraper</title>
+    {{>headCssJs}}
+</head>
+
+<body>
+    {{>navbar}}
+    <div class="jumbotron">
+        <h1>{{street}} {{address_home_number}}</h1>
+        <h3>{{neighborhood}}, {{city_text}}</h3>
+    </div>
+    <div class="container content-wrapper">
+
+        <div class="row appartments">
+            {{#each appartments}}
+            {{>appartmentThumbnail}}
+            {{/each}}
+        </div>
+
+    </div>
+
+</body>
+
+</html>

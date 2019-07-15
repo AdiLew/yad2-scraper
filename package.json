@@ -18,8 +18,10 @@
   "homepage": "https://github.com/AdiLew/yad2-scraper#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "geolib": "^3.0.4",
     "hbs": "^4.0.4",
     "lodash": "^4.17.14",
-    "request": "^2.88.0"
+    "moment": "^2.24.0",
+    "node-fetch": "^2.6.0"
   }
 }

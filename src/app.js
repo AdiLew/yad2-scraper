@@ -19,11 +19,31 @@ app.set('view engine', 'hbs');
 app.set('views', viewsDir);
 hbs.registerPartials(partialsDir);
 
+const qs = {
+    cat: 2,
+    subcat: 2,
+    city: 8600,
+    property: "1,3",
+    rooms: "3--1",
+    price: "-1-6000",
+    //parking: 1,
+    EnterDate: '1-10-2019'
+
+}
+
+
+
 //Route
 app.get('', (req, res) => {
-    yad2Api().then((data) => {
+
+    yad2Api.getApptsList(qs).then((data) => {
         res.render('index', data)
     })
+})
+
+app.get('/appt', (req, res) => {
+    yad2Api.getApptDetails(req.query.apptId)
+    .then((data) => req.query.data ? res.send(data) : res.render('appartment',data))
 })
 
 app.get('/credits', (req, res) => {
@@ -32,7 +52,7 @@ app.get('/credits', (req, res) => {
 
 
 app.get('/data', (req, res) => {
-    yad2Api().then((response) => {
+    yad2Api.getApptsList(qs).then((response) => {
         res.send(response)
     })
 })
