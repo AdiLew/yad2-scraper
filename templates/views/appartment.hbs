@@ -14,10 +14,30 @@
     </div>
     <div class="container content-wrapper">
 
-        <div class="row appartments">
-            {{#each appartments}}
-            {{>appartmentThumbnail}}
-            {{/each}}
+        <div class="row appt-data">
+            <div class="col-md-8 appt-details-container">
+                <p class="h5">תיאור:</p>
+                <p>{{info_text}}</p>
+                <div class="row">
+                    <div class="col-md">
+                        <p>שכ"ד: {{price}}</p>
+                        <p>ועד בית: {{HouseCommittee}}</p>
+                        <p>ארנונה לחודשיים: {{property_tax}}</p>
+                        {{#if merchant}}
+                        <p>דמי תיווך: {{merchant_fees}}</p>
+                        
+                        {{/if}}
+                         <p class="h6">תשלום חודשי משוקלל: {{MonthlyCostOfOwnersip}} &#x20aa</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                {{>imageCarousel}}
+            </div>
+
+        </div>
+        <div class="row">
+            <a class="btn btn-dark" href="https://www.yad2.co.il/s/c/{{id}}" target="_blank"> לצפיה ביד 2</a>
         </div>
 
     </div>

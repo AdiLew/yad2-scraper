@@ -36,3 +36,7 @@
 .feature-icons .icon-inactive{
     opacity: 0.1;
 }
+
+.appt-details-container{
+    padding-left: 20px;
+}
