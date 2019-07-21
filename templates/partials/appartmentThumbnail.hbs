@@ -15,9 +15,11 @@
         <p> <span class="fa fa-map-marker"></span> {{kmFromOmris}} ק"מ </p>
         <div class="row appt-thumbnail-footer">
             <div class="feature-icons">
-                <span class="fa fa-paw {{#unless PetsInHouse_text}} icon-inactive{{/unless}}"></span>
-                <span class="fa fa-car {{#unless Parking_text}} icon-inactive{{/unless}}"></span>
+                <span class="fa fa-paw {{#unless PetsInHouse_text}} icon-inactive{{/unless}}" data-toggle="tooltip" data-placement="top" title="{{#unless PetsInHouse_text}}ללא {{/unless}}בעלי חיים"></span>
+                <span class="fa fa-car {{#unless Parking_text}} icon-inactive{{/unless}}"  data-toggle="tooltip" data-placement="top" title="{{#unless Parking_text}}ללא {{/unless}}חניה"></span>
+                <span class="fa fa-briefcase {{#unless merchant}} icon-inactive{{/unless}}"  data-toggle="tooltip" data-placement="top" title="{{#unless merchant}} לא מ{{/unless}}תיווך"></span>
             </div>
+            
             <a href="/appt?apptId={{id}}" target="_blank" class="btn btn-dark">למודעה</a>
             {{!-- <a href="https://www.yad2.co.il/s/c/{{id}}" target="_blank" class="btn btn-dark">למודעה</a> --}}
         </div>
