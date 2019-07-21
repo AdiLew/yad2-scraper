@@ -38,33 +38,33 @@ const getApptDetails = (apptId) => {
 
     return fetch(endpoint, requestOptions)
         .then(res => res.json())
-        .then(json => json)
+        .then(json => cleanApptDrillData(json))
 }
 
-const callApi = (qs) => {
-    requestOptions.qs = qs;
+// const callApi = (qs) => {
+//     requestOptions.qs = qs;
 
-    return new Promise((resolve, reject) => {
-        try {
-            request('https://www.yad2.co.il/api/feed/get', requestOptions, (error, response, body) => {
-                if (error) {
-                    reject(error)
-                }
-                else {
-                    const { total_items, feed_items } = _.get(body, 'feed')
-                    const appartments = feed_items.filter((i) => i.type === 'ad')
-                    resolve({ total_items, appartments })
-                }
-            })
-        }
-        catch (error) {
-            reject(error)
-        }
-    })
-}
+//     return new Promise((resolve, reject) => {
+//         try {
+//             request('https://www.yad2.co.il/api/feed/get', requestOptions, (error, response, body) => {
+//                 if (error) {
+//                     reject(error)
+//                 }
+//                 else {
+//                     const { total_items, feed_items } = _.get(body, 'feed')
+//                     const appartments = feed_items.filter((i) => i.type === 'ad')
+//                     resolve({ total_items, appartments })
+//                 }
+//             })
+//         }
+//         catch (error) {
+//             reject(error)
+//         }
+//     })
+// }
 
 
-const cleanListItemObject = (i) => {
+function cleanListItemObject(i) {
     return {
         //Basic info
         square_meters: i.square_meters,
@@ -114,9 +114,22 @@ const cleanListItemObject = (i) => {
         contact_name: i.contact_name,
         merchant: i.merchant,
         merchant_name: i.merchant_name,
-        added: 'Uploaded '+moment(i.date_added, 'YYYY-MM-DD HH:mm:SS').fromNow(),
-        kmFromOmris: Math.round(geolib.getDistance(i.coordinates, {latitude: 32.0874588, longitude: 34.8141411})/1000.0 , 1)
+        added: 'Uploaded ' + moment(i.date_added, 'YYYY-MM-DD HH:mm:SS').fromNow(),
+        kmFromOmris: Math.round(geolib.getDistance(i.coordinates, { latitude: 32.0874588, longitude: 34.8141411 }) / 1000.0, 1)
     }
+}
+function cleanApptDrillData(i) {
+    i.priceNum = ilsToNum(i.price);
+    i.houseCommiteeNum =  ilsToNum(i.HouseCommittee);
+    i.propertyTaxNum = ilsToNum(i.property_tax);
+    i.merchant_fees = i.merchant ? i.priceNum * 1.17 : 0;
+    i.MonthlyCostOfOwnersip = i.priceNum + i.houseCommiteeNum + (i.propertyTaxNum/2) + i.merchant_fees;
+
+    return i
+
+}
+function ilsToNum(stValue){
+    return parseFloat(stValue.replace(/[\D]/g, ""));
 }
 
 module.exports = {
