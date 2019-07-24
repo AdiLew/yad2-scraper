@@ -1,3 +1,6 @@
+html, body{
+    height:100%;
+}
 .appt-main-img{
     width: 18rem;
     height: 12rem;
@@ -39,4 +42,25 @@
 
 .appt-details-container{
     padding-left: 20px;
+}
+#appt-modal .modal-content{
+    height: 80vh;
+}
+#appt-modal .modal-content #appt-content{
+    height:100%;
+    width:100%;
+    border:none;
+}
+
+
+.appt-content-wrapper, .appt-drill{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.appt-data{
+    flex-grow: 1;
+}
+.appt-drill-footer{
+    padding: 2rem;
 }

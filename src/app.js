@@ -43,8 +43,17 @@ app.get('', (req, res) => {
 
 app.get('/appt', (req, res) => {
     yad2Api.getApptDetails(req.query.apptId)
-    .then((data) => req.query.data ? res.send(data) : res.render('appartment',data))
+    .then((data) => {
+        if (req.query.data){
+            return res.send(data);
+        }
+        if (req.query.iframe){
+            data.iFrame = true;
+        }
+        return res.render('appartment',data)
+    })
 })
+
 
 app.get('/credits', (req, res) => {
     res.render('credits', {})

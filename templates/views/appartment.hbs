@@ -6,38 +6,46 @@
     {{>headCssJs}}
 </head>
 
-<body>
+<body class="appt-drill">
+    {{#if iFrame}}
     {{>navbar}}
+    {{/if}}
     <div class="jumbotron">
         <h1>{{street}} {{address_home_number}}</h1>
         <h3>{{neighborhood}}, {{city_text}}</h3>
     </div>
-    <div class="container content-wrapper">
+    <div class="container appt-content-wrapper">
 
         <div class="row appt-data">
             <div class="col-md-8 appt-details-container">
                 <p class="h5">תיאור:</p>
                 <p>{{info_text}}</p>
-                <div class="row">
-                    <div class="col-md">
-                        <p>שכ"ד: {{price}}</p>
-                        <p>ועד בית: {{HouseCommittee}}</p>
-                        <p>ארנונה לחודשיים: {{property_tax}}</p>
-                        {{#if merchant}}
-                        <p>דמי תיווך: {{merchant_fees}}</p>
-                        
-                        {{/if}}
-                         <p class="h6">תשלום חודשי משוקלל: {{MonthlyCostOfOwnersip}} &#x20aa</p>
+
+                <div class="card border-info">
+                    <div class="card-header" data-toggle="collapse" data-target="#pricing-details" aria-expanded="false"
+                        aria-controls="pricing">
+                        פירוט מחירים
+                        </div>
+                        <div class="card-body collapse" id="pricing-details" aria-labelledby="pricing">
+                            <p>שכ"ד: {{price}}</p>
+                            <p>ועד בית: {{HouseCommittee}}</p>
+                            <p>ארנונה לחודשיים: {{property_tax}}</p>
+                            {{#if merchant}}
+                            <p>דמי תיווך: {{merchant_fees}}</p>
+
+                            {{/if}}
+                            <p class="h6">תשלום חודשי משוקלל: {{MonthlyCostOfOwnersip}} &#x20aa</p>
+                        </div>
                     </div>
                 </div>
-            </div>
             <div class="col-md-4">
                 {{>imageCarousel}}
             </div>
 
         </div>
-        <div class="row">
-            <a class="btn btn-dark" href="https://www.yad2.co.il/s/c/{{id}}" target="_blank"> לצפיה ביד 2</a>
+        <div class="row appt-drill-footer">
+            <a class="btn btn-dark" href="https://www.yad2.co.il/s/c/{{id}}?iframe=true" target="_blank"> לצפיה ביד
+                2</a>
         </div>
 
     </div>
