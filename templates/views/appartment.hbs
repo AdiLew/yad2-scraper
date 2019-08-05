@@ -18,34 +18,43 @@
 
         <div class="row appt-data">
             <div class="col-md-8 appt-details-container">
-                <p class="h5">תיאור:</p>
+                <p class="h5">דירת {{rooms}} חדרים ({{meter}} מ"ר)</p>
+                <p class="h6">תיאור:</p>
                 <p>{{info_text}}</p>
 
                 <div class="card border-info">
                     <div class="card-header" data-toggle="collapse" data-target="#pricing-details" aria-expanded="false"
                         aria-controls="pricing">
                         פירוט מחירים
-                        </div>
-                        <div class="card-body collapse" id="pricing-details" aria-labelledby="pricing">
-                            <p>שכ"ד: {{price}}</p>
-                            <p>ועד בית: {{HouseCommittee}}</p>
-                            <p>ארנונה לחודשיים: {{property_tax}}</p>
-                            {{#if merchant}}
-                            <p>דמי תיווך: {{merchant_fees}}</p>
+                    </div>
+                    <div class="card-body collapse" id="pricing-details" aria-labelledby="pricing">
+                        <p>שכ"ד: {{price}}</p>
+                        <p>ועד בית: {{HouseCommittee}}</p>
+                        <p>ארנונה לחודשיים: {{property_tax}}</p>
+                        {{#if merchant}}
+                        <p>דמי תיווך: {{merchant_fees}}</p>
 
-                            {{/if}}
-                            <p class="h6">תשלום חודשי משוקלל: {{MonthlyCostOfOwnersip}} &#x20aa</p>
-                        </div>
+                        {{/if}}
+                        <p class="h6">תשלום חודשי משוקלל: {{MonthlyCostOfOwnersip}} &#x20aa</p>
                     </div>
                 </div>
+            </div>
             <div class="col-md-4">
                 {{>imageCarousel}}
             </div>
 
         </div>
-        <div class="row appt-drill-footer">
-            <a class="btn btn-dark" href="https://www.yad2.co.il/s/c/{{id}}?iframe=true" target="_blank"> לצפיה ביד
-                2</a>
+        <div class="d-flex flex-row appt-drill-footer">
+            <div class="footer-text flex-grow-1">
+                <p>פורסמה לראשונה {{added}}</p>
+            </div>
+            <div class="fotter-btns">
+                <a class="btn btn-dark" href="https://www.yad2.co.il/s/c/{{id}}" target="_blank"> לצפיה ביד
+                    2</a>
+                <a class="btn btn-dark" href="/api/appt?apptId={{id}}" target="_blank"> Raw Data</a>
+            </div>
+
+
         </div>
 
     </div>

@@ -64,3 +64,6 @@ html, body{
 .appt-drill-footer{
     padding: 2rem;
 }
+.appt-drill-footer .fotter-btns .btn{
+    margin-right: 1rem
+}

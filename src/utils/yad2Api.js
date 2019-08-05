@@ -4,6 +4,8 @@ const _ = require('lodash');
 const moment = require('moment');
 const geolib = require('geolib');
 
+
+moment.locale('he-IL')
 const requestOptions = {
     headers: {
         //Chrome-like User agent compells Yad 2 return the response as a JSON for some reason.
@@ -65,7 +67,8 @@ const getApptDetails = (apptId) => {
 
 
 function cleanListItemObject(i) {
-    return {
+    const now = new moment()
+    const data = {
         //Basic info
         square_meters: i.square_meters,
         price: i.price,
@@ -114,22 +117,42 @@ function cleanListItemObject(i) {
         contact_name: i.contact_name,
         merchant: i.merchant,
         merchant_name: i.merchant_name,
-        added: 'Uploaded ' + moment(i.date_added, 'YYYY-MM-DD HH:mm:SS').fromNow(),
-        kmFromOmris: Math.round(geolib.getDistance(i.coordinates, { latitude: 32.0874588, longitude: 34.8141411 }) / 1000.0, 1)
+        kmFromOmris: (geolib.getDistance(i.coordinates, { latitude: 32.0874588, longitude: 34.8141411 }) / 1000.0).toFixed(1),
+        adUrl: `https://www.yad2.co.il/s/c/${i.id}`
     }
+
+    data.hoursSinceAdded = now.diff(data.date_added, 'hours')
+    return data;
 }
 function cleanApptDrillData(i) {
-    i.priceNum = ilsToNum(i.price);
-    i.houseCommiteeNum =  ilsToNum(i.HouseCommittee);
-    i.propertyTaxNum = ilsToNum(i.property_tax);
-    i.merchant_fees = i.merchant ? i.priceNum * 1.17 : 0;
-    i.MonthlyCostOfOwnersip = i.priceNum + i.houseCommiteeNum + (i.propertyTaxNum/2) + i.merchant_fees;
+    const infoBar = {}
+    i.info_bar_items.forEach(k => infoBar[k.key] = isNaN(k.titleWithoutLabel) ? k.titleWithoutLabel : parseFloat(k.titleWithoutLabel))
 
-    return i
+    const data = {
+        ...i,
+        ...infoBar,
+        added: new moment(i.date_added).calendar(),
+        last_update: new moment(i.date_raw).calendar(),
+
+        priceNum: ilsToNum(i.price),
+        houseCommiteeNum: ilsToNum(i.HouseCommittee),
+        propertyTaxNum: ilsToNum(i.property_tax),
+        merchant_fees: i.merchant ? i.priceNum * 1.17 : 0,
+
+    }
+    data.MonthlyCostOfOwnersip = data.priceNum + data.houseCommiteeNum + (data.propertyTaxNum / 2) + (data.merchant_fees / 12)
+
+    return data;
 
 }
-function ilsToNum(stValue){
-    return parseFloat(stValue.replace(/[\D]/g, ""));
+function ilsToNum(stValue) {
+    if (_.isEmpty(stValue)) {
+        return 0;
+    }
+    if (_.isNumber(stValue)) {
+        return stValue;
+    }
+    return parseFloat(stValue.replace(/[\D]/g, "")) || 0;
 }
 
 module.exports = {
