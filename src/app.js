@@ -2,9 +2,11 @@ const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
 const yad2Api = require('./utils/yad2Api.js')
+const bot = require('./utils/telegram.js')
 
 
 const app = express()
+const port = process.env.PORT || 3300;
 //Set directory cariables
 const staticDir = path.join(__dirname, '../public')
 const templatesDir = path.join(__dirname, '../templates')
@@ -43,16 +45,20 @@ app.get('', (req, res) => {
 
 app.get('/appt', (req, res) => {
     yad2Api.getApptDetails(req.query.apptId)
-    .then((data) => {
-        if (req.query.data){
-            return res.send(data);
-        }
-        if (req.query.iframe){
-            data.iFrame = true;
-        }
-        return res.render('appartment',data)
-    })
+        .then((data) => {
+            if (req.query.iframe) {
+                data.iFrame = true;
+            }
+            return res.render('appartment', data)
+        })
 })
+
+app.get('/api/appt', (req, res) => {
+    yad2Api.getApptDetails(req.query.apptId)
+        .then((data) => res.send(data))
+})
+
+
 
 
 app.get('/credits', (req, res) => {
@@ -60,12 +66,32 @@ app.get('/credits', (req, res) => {
 })
 
 
-app.get('/data', (req, res) => {
+app.get('/api/data', (req, res) => {
     yad2Api.getApptsList(qs).then((response) => {
         res.send(response)
     })
 })
 
-app.listen(3300)
+app.get('/api/*', (req, res) => {
+    res.send({ error: 'unfamiliar endpoint :(' })
+})
+
+app.get('*', (req, res) => {
+    res.send({ error: 'Page Not Found' })
+})
+
+
+app.listen(port)
+
+
+setInterval(() => {
+    yad2Api.getApptsList(qs)
+        .then(({ appartments }) => {
+            bot.apptReport(appartments, 1);
+        })
+}
+    , 3600000
+)
+
 
 
