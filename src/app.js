@@ -22,17 +22,7 @@ app.set('view engine', 'hbs');
 app.set('views', viewsDir);
 hbs.registerPartials(partialsDir);
 
-const qs = {
-    cat: 2,
-    subcat: 2,
-    city: 8600,
-    property: "1,3",
-    rooms: "3--1",
-    price: "-1-6000",
-    //parking: 1,
-    EnterDate: '1-10-2019'
-
-}
+const qs = yad2Api.getDefaultFilters().queryFilters;
 
 
 
