@@ -1,5 +1,5 @@
 {
-    "query": {
+    "queryFilters": {
         "cat": 2,
         "subcat": 2,
         "city": 8600,
@@ -7,10 +7,10 @@
         "rooms": "3--1",
         "price": "0-6000",
         "parking": 1,
-        "pets": "",
-        "minEnterDate": "1-10-2019"
+        "EnterDate": "1-10-2019"
     },
-    "custom":{
-        "maxEnterDate": "1-11-2019"
+    "customFilters":{
+        "maxEnterDate": "1-11-2019",
+        "kmFromOmri": 2
     }
 }

@@ -9,10 +9,9 @@ const geolib = require('geolib');
 
 
 
-const dataFileDir = path.join(__dirname,'..\\data');
-const dataPath = path.join (dataFileDir,'appartments.json')
-const configDir = path.join(__dirname,'..\\config');
-const defaultFiltersPath = path.join (configDir,'defaultFilters.json')
+
+const configDir = path.join(__dirname, '..\\config');
+const defaultFiltersPath = path.join(configDir, 'defaultFilters.json')
 
 
 moment.locale('he-IL')
@@ -25,7 +24,7 @@ const requestOptions = {
 }
 
 
-const getApptsList = (filters, saveToFile = false) => {
+const getApptsList = (filters) => {
     let endpoint = 'https://www.yad2.co.il/api/feed/get'
     const query = querystring.stringify(filters)
     endpoint += _.isEmpty(filters) ? '' : `?${query}`
@@ -40,15 +39,9 @@ const getApptsList = (filters, saveToFile = false) => {
                 .sort((a, b) => {
                     return b.date_added.valueOf() - a.date_added.valueOf();
                 })
-
-            //FS
-            if (saveToFile){
-                fs.writeFileSync(dataPath, appartments)
-            };
-
             return { total_items, appartments };
         })
-        
+
 }
 
 const getApptDetails = (apptId) => {
@@ -59,13 +52,13 @@ const getApptDetails = (apptId) => {
         .then(json => cleanApptDrillData(json))
 }
 
-const getDefaultFilters = ()=>{
-    try{
+const getDefaultFilters = () => {
+    try {
         const filtersBuffer = fs.readFileSync(defaultFiltersPath);
         const filtersJSON = filtersBuffer.toString()
         return JSON.parse(filtersJSON);
     }
-    catch(err){
+    catch (err) {
         console.log(err)
     }
 };
@@ -95,62 +88,69 @@ const getDefaultFilters = ()=>{
 
 
 function cleanListItemObject(i) {
-    const now = new moment()
-    const data = {
-        //Basic info
-        square_meters: i.square_meters,
-        price: i.price,
-        Rooms_text: i.Rooms_text,
-        Floor_text: i.Floor_text,
-        TotalFloor_text: i.TotalFloor_text,
-        HomeTypeID_text: i.HomeTypeID_text,
-        yehidatdiur_text: i.yehidatdiur_text,
-        PaymentInYear_text: i.PaymentInYear_text,
-        date_of_entry: i.date_of_entry,
-        Immediate_text: i.Immediate_text,
-        AssetClassificationID_text: i.AssetClassificationID_text,
-        //location
-        coordinates: i.coordinates,
-        address_home_number: i.address_home_number,
-        street: i.street,
-        neighborhood: i.neighborhood,
-        city: i.city,
-        //features,
-        AirConditioner_text: i.AirConditioner_text,
-        mamad_text: i.mamad_text,
-        FairRent_text: i.FairRent_text,
-        Furniture_text: i.Furniture_text,
-        sunpatio_text: i.sunpatio_text,
-        Amudim_text: i.Amudim_text,
-        storeroom_text: i.storeroom_text,
-        Parking_text: i.Parking_text,
-        PetsInHouse_text: i.PetsInHouse_text,
-        Grating_text: i.Grating_text,
-        Elevator_text: i.Elevator_text,
-        patio_text: i.patio_text,
-        Meshupatz_text: i.Meshupatz_text,
-        Porch_text: i.Porch_text,
-        LongTerm_text: i.LongTerm_text,
-        address_more: i.address_more,
-        //images and videos,
-        img_url: i.img_url,
-        images: i.images,
-        images_count: i.images_count,
-        video_url: i.video_url,
-        mp4_video_url: i.mp4_video_url,
-        //ad details
-        id: i.id,
-        date_added: new moment(i.date_added, 'YYYY-MM-DD HH:mm:SS'),
-        customer_id: i.customer_id,
-        contact_name: i.contact_name,
-        merchant: i.merchant,
-        merchant_name: i.merchant_name,
-        kmFromOmris: (geolib.getDistance(i.coordinates, { latitude: 32.0874588, longitude: 34.8141411 }) / 1000.0).toFixed(1),
-        adUrl: `https://www.yad2.co.il/s/c/${i.id}`
-    }
+    try {
+        const now = new moment()
+        const data = {
+            //Basic info
+            square_meters: i.square_meters,
+            price: i.price,
+            Rooms_text: i.Rooms_text,
+            Floor_text: i.Floor_text,
+            TotalFloor_text: i.TotalFloor_text,
+            HomeTypeID_text: i.HomeTypeID_text,
+            yehidatdiur_text: i.yehidatdiur_text,
+            PaymentInYear_text: i.PaymentInYear_text,
+            date_of_entry: i.date_of_entry,
+            Immediate_text: i.Immediate_text,
+            AssetClassificationID_text: i.AssetClassificationID_text,
+            //location
+            coordinates: i.coordinates,
+            address_home_number: i.address_home_number,
+            street: i.street,
+            neighborhood: i.neighborhood,
+            city: i.city,
+            //features,
+            AirConditioner_text: i.AirConditioner_text,
+            mamad_text: i.mamad_text,
+            FairRent_text: i.FairRent_text,
+            Furniture_text: i.Furniture_text,
+            sunpatio_text: i.sunpatio_text,
+            Amudim_text: i.Amudim_text,
+            storeroom_text: i.storeroom_text,
+            Parking_text: i.Parking_text,
+            PetsInHouse_text: i.PetsInHouse_text,
+            Grating_text: i.Grating_text,
+            Elevator_text: i.Elevator_text,
+            patio_text: i.patio_text,
+            Meshupatz_text: i.Meshupatz_text,
+            Porch_text: i.Porch_text,
+            LongTerm_text: i.LongTerm_text,
+            address_more: i.address_more,
+            //images and videos,
+            img_url: i.img_url,
+            images: i.images,
+            images_count: i.images_count,
+            video_url: i.video_url,
+            mp4_video_url: i.mp4_video_url,
+            //ad details
+            id: i.id,
+            date_added: new moment(i.date_added, 'YYYY-MM-DD HH:mm:SS'),
+            customer_id: i.customer_id,
+            contact_name: i.contact_name,
+            merchant: i.merchant,
+            merchant_name: i.merchant_name,
+            kmFromOmris: parseFloat((geolib.getDistance(i.coordinates, { latitude: 32.0874588, longitude: 34.8141411 }) / 1000.0).toFixed(1)),
+            adUrl: `https://www.yad2.co.il/s/c/${i.id}`
+        }
 
-    data.hoursSinceAdded = now.diff(data.date_added, 'hours')
-    return data;
+        data.hoursSinceAdded = now.diff(data.date_added, 'hours')
+        return data;
+    }
+    catch (err) {
+        console.log(err)
+        console.log(i);
+        return;
+    }
 }
 
 function cleanApptDrillData(i) {
