@@ -2,7 +2,8 @@ const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
 const yad2Api = require('./utils/yad2Api.js')
-const bot = require('./utils/telegram.js')
+//const bot = require('./utils/telegram.js')
+const bot = require('./utils/telegram2.js')
 
 
 const app = express()
@@ -82,16 +83,17 @@ app.get('*', (req, res) => {
 
 
 app.listen(port)
+bot.launch();
+console.log('New Telefram is up!')
 
-
-setInterval(() => {
-    yad2Api.getApptsList(qs)
-        .then(({ appartments }) => {
-            bot.apptReport(appartments, 1);
-        })
-}
-    , 3600000
-)
+// setInterval(() => {
+//     yad2Api.getApptsList(qs)
+//         .then(({ appartments }) => {
+//             bot.apptReport(appartments, 1);
+//         })
+// }
+//     , 3600000
+// )
 
 
 
