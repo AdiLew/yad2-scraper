@@ -1,12 +1,16 @@
 {
-    "cat": 2,
-    "subcat": 2,
-    "city": 8600,
-    "property": "1,3",
-    "rooms": "3--1",
-    "price": "0-6000",
-    "parking": 1,
-    "pets": "",
-    "minEnterDate": "1-10-2019",
-    "maxEnterDate": "1-11-2019"
+    "query": {
+        "cat": 2,
+        "subcat": 2,
+        "city": 8600,
+        "property": "1,3",
+        "rooms": "3--1",
+        "price": "0-6000",
+        "parking": 1,
+        "pets": "",
+        "minEnterDate": "1-10-2019"
+    },
+    "custom":{
+        "maxEnterDate": "1-11-2019"
+    }
 }

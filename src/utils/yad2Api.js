@@ -1,8 +1,18 @@
+const path = require('path');
+const fs = require('fs');
 const querystring = require('querystring');
 const fetch = require('node-fetch');
+
 const _ = require('lodash');
 const moment = require('moment');
 const geolib = require('geolib');
+
+
+
+const dataFileDir = path.join(__dirname,'..\\data');
+const dataPath = path.join (dataFileDir,'appartments.json')
+const configDir = path.join(__dirname,'..\\config');
+const defaultFiltersPath = path.join (configDir,'defaultFilters.json')
 
 
 moment.locale('he-IL')
@@ -15,7 +25,7 @@ const requestOptions = {
 }
 
 
-const getApptsList = (filters) => {
+const getApptsList = (filters, saveToFile = false) => {
     let endpoint = 'https://www.yad2.co.il/api/feed/get'
     const query = querystring.stringify(filters)
     endpoint += _.isEmpty(filters) ? '' : `?${query}`
@@ -31,8 +41,14 @@ const getApptsList = (filters) => {
                     return b.date_added.valueOf() - a.date_added.valueOf();
                 })
 
+            //FS
+            if (saveToFile){
+                fs.writeFileSync(dataPath, appartments)
+            };
+
             return { total_items, appartments };
         })
+        
 }
 
 const getApptDetails = (apptId) => {
@@ -42,6 +58,18 @@ const getApptDetails = (apptId) => {
         .then(res => res.json())
         .then(json => cleanApptDrillData(json))
 }
+
+const getDefaultFilters = ()=>{
+    try{
+        const filtersBuffer = fs.readFileSync(defaultFiltersPath);
+        const filtersJSON = filtersBuffer.toString()
+        return JSON.parse(filtersJSON);
+    }
+    catch(err){
+        console.log(err)
+    }
+};
+
 
 // const callApi = (qs) => {
 //     requestOptions.qs = qs;
@@ -124,6 +152,7 @@ function cleanListItemObject(i) {
     data.hoursSinceAdded = now.diff(data.date_added, 'hours')
     return data;
 }
+
 function cleanApptDrillData(i) {
     const infoBar = {}
     i.info_bar_items.forEach(k => infoBar[k.key] = isNaN(k.titleWithoutLabel) ? k.titleWithoutLabel : parseFloat(k.titleWithoutLabel))
@@ -157,5 +186,6 @@ function ilsToNum(stValue) {
 
 module.exports = {
     getApptsList,
-    getApptDetails
+    getApptDetails,
+    getDefaultFilters
 }
