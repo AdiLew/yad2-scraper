@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const Telegraf = require('telegraf');
+const moment = require('moment');
 const chalk = require('chalk');
 const yad2Api = require('./yad2Api');
 
@@ -24,7 +25,6 @@ bot.on('sticker', (ctx) => {
 })
 
 bot.command('/getreportnow', (ctx) => {
-    console.log(ctx)
     ctx.reply('Working on it');
     //yad2Api.getApptsList( {}, true)
     const {
@@ -33,9 +33,8 @@ bot.command('/getreportnow', (ctx) => {
     } = yad2Api.getDefaultFilters();
     yad2Api.getApptsList(queryFilters)
         .then(
-            ({
-                appartments
-            }) => {
+            ({ appartments }) => {
+                ctx.reply("I've got some data, let me clean it up for you");
                 const prevQueryResultBuffer = fs.readFileSync(dataPath) || '';
                 const prevQueryResultJson = prevQueryResultBuffer.toString();
                 const prevResult = JSON.parse(prevQueryResultJson);
@@ -45,16 +44,41 @@ bot.command('/getreportnow', (ctx) => {
                 }) => {
                     return !prevResult.some(a => a.id === id)
                 })
-                const message = newAppts.map(apt => apt.id)
 
-                fs.writeFileSync(dataPath, JSON.stringify(appartments))
+                if (newAppts.length < 1) {
+                    ctx.reply('Nothing New 😞')
+                }
+                else {
+                    newAppts
+                        .filter((appt) => {
+                            return appt.kmFromOmris < 2;
+                        })
+                        .forEach((appt) => {
 
-                return ctx.reply(message)
+                            ctx.replyWithHTML(
+                                `<a href="${appt.adUrl}">דירת ${appt.Rooms_text} חדרים ב${appt.street} ${appt.address_home_number}</a>: \n`
+                                + `${appt.square_meters} מ"ר\n`
+                                + `שכר דירה: <b>${appt.price}</b>\n`
+                                + `פורסמה ${appt.added}\n`
+                                + `<a href="https://www.google.com/maps/search/?api=1&query=${appt.street} ${appt.address_home_number} רמת גן">צפייה ב-Google Maps</a>`
+                            )
+                        })
+
+
+                    fs.writeFileSync(dataPath, JSON.stringify(appartments))
+                }
+
+
+
             },
-            err => console.log(err)
+            err => console.log(new moment(), err)
         )
 
 
+})
+
+bot.command('/ping', (ctx) => {
+    ctx.replyWithSticker('CAADAgADLgcAAowt_QfMJDtylnU7gxYE');
 })
 
 bot.hears('Love You', (ctx) => {

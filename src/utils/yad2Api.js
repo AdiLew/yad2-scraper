@@ -144,6 +144,7 @@ function cleanListItemObject(i) {
         }
 
         data.hoursSinceAdded = now.diff(data.date_added, 'hours')
+        data.added = data.date_added.calendar();
         return data;
     }
     catch (err) {
