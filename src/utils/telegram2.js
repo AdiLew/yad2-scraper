@@ -5,6 +5,9 @@ const moment = require('moment');
 const chalk = require('chalk');
 const yad2Api = require('./yad2Api');
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+
 const token = '823158626:AAFrdjYf-UFBGN5uZRmnvU3MhI5JVY89GEk'
 const bot = new Telegraf(token)
 
@@ -18,8 +21,6 @@ bot.on('sticker', (ctx) => {
     const { file_id } = ctx.message.sticker
     ctx.reply(file_id)
 })
-
-
 
 bot.command('/getreportnow', (ctx) => {
     ctx.reply('Working on it');
@@ -88,4 +89,7 @@ bot.hears('Love You', (ctx) => {
     ctx.replyWithSticker('CAADAgADQgcAAowt_QdHeoWouiAFCBYE')
 })
 
+bot.hears('הפקר', (ctx) => {
+    ctx.replyWithSticker('CAADBAADlgAD9csoBWoiHhtQmQrtFgQ')
+})
 module.exports = bot;
