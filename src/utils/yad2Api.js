@@ -10,7 +10,7 @@ const geolib = require('geolib');
 
 
 
-const configDir = path.join(__dirname, '..\\config');
+const configDir = path.join(__dirname, '../config');
 const defaultFiltersPath = path.join(configDir, 'defaultFilters.json')
 
 
