@@ -74,7 +74,7 @@ app.get('*', (req, res) => {
 
 app.listen(port)
 bot.launch();
-console.log('New Telefram is up!')
+console.log('Telegram is up!')
 
 // setInterval(() => {
 //     yad2Api.getApptsList(qs)
