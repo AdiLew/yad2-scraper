@@ -5,7 +5,7 @@ const moment = require('moment');
 const chalk = require('chalk');
 const yad2Api = require('./yad2Api');
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+//process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 
 const token = '823158626:AAFrdjYf-UFBGN5uZRmnvU3MhI5JVY89GEk'
@@ -83,6 +83,11 @@ bot.command('/getreportnow', (ctx) => {
 bot.command('/ping', (ctx) => {
     ctx.replyWithSticker('CAADAgADLgcAAowt_QfMJDtylnU7gxYE');
 })
+
+bot.command('/hefker', (ctx) => {
+    ctx.replyWithSticker('CAADBAADlgAD9csoBWoiHhtQmQrtFgQ');
+})
+
 
 bot.hears('Love You', (ctx) => {
     ctx.reply('Love you too!')
