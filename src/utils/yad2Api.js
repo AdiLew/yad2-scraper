@@ -139,9 +139,11 @@ function cleanListItemObject(i) {
             contact_name: i.contact_name,
             merchant: i.merchant,
             merchant_name: i.merchant_name,
-            kmFromOmris: parseFloat((geolib.getDistance(i.coordinates, { latitude: 32.0874588, longitude: 34.8141411 }) / 1000.0).toFixed(1)),
+            kmFromOmris: parseFloat((geolib.getDistance(i.coordinates, { latitude: 32.072268, longitude: 34.779225 }) / 1000.0).toFixed(1)),
             adUrl: `https://www.yad2.co.il/s/c/${i.id}`
         }
+
+        
 
         data.hoursSinceAdded = now.diff(data.date_added, 'hours')
         data.added = data.date_added.calendar();
