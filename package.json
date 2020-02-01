@@ -4,17 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js"
+    "start": "node src/app.js",
+    "dev": "env-cmd -f ./src/config/dev.env nodemon src/app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AdiLew/yad2-scraper.git"
-  },
-  "author": "",
+  "author": "AdiLew",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/AdiLew/yad2-scraper/issues"
-  },
   "homepage": "https://github.com/AdiLew/yad2-scraper#readme",
   "dependencies": {
     "chalk": "^2.4.2",
@@ -27,5 +21,9 @@
     "node-fetch": "^2.6.0",
     "telegraf": "^3.32.0",
     "telegram-bot-api": "^1.3.3"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.0.1",
+    "nodemon": "^2.0.2"
   }
 }

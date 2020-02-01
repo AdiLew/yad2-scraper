@@ -5,10 +5,8 @@ const moment = require('moment');
 const chalk = require('chalk');
 const yad2Api = require('./yad2Api');
 
-//process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-
-const token = '823158626:AAFrdjYf-UFBGN5uZRmnvU3MhI5JVY89GEk'
+const token = process.env.BOT_TOKEN;
 const bot = new Telegraf(token)
 
 const dataFileDir = path.join(__dirname, '..\\data');
