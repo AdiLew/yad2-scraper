@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 const Telegram = require('telegram-bot-api');
 const emoji = require('node-emoji');
-const bot = new Telegram({ token: '823158626:AAFrdjYf-UFBGN5uZRmnvU3MhI5JVY89GEk', updates: { enabled: true } })
+const bot = new Telegram({ token: process.env.BOT_TOKEN, updates: { enabled: true } })
 
 const personalChat = 34238837;
 const groupChat = -371062059
